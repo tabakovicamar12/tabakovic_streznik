@@ -1,0 +1,392 @@
+[
+  {
+    "id": "1776706853875",
+    "email": "student_1776706853736@um.si",
+    "password": "$2b$10$9ajbCqdCRylQ4L0EsZujjuL2RuBy7UAWkbxQ.DpsdXrWhCVgJSQLC",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T17:40:53.875Z",
+    "profile": {
+      "temna_tema": true,
+      "obvestila": [
+        "predavanja",
+        "kolokviji"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776707504230",
+    "email": "test@student.si",
+    "password": "$2b$10$jZ626PKBIuI1B041xQMeZOHetPxGLEUJCqAzd/xaFgiODvdGy/1le",
+    "faks_id": "EPF",
+    "createdAt": "2026-04-20T17:51:44.230Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776708214253",
+    "email": "test_materials_1776708214111@um.si",
+    "password": "$2b$10$XbPKk/R0qzljchnTIDrFcuc6UtPjIja1mCIWjr1DWY1e8PL0dTNwm",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:03:34.253Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776708299881",
+    "email": "test_materials_1776708299766@um.si",
+    "password": "$2b$10$NCU12SlWLd2e1MWF8zgCT.gAmu8bI/uQB3Hr1gan4J1xYmfGtrZ2G",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:04:59.881Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776708329723",
+    "email": "test_materials_1776708329590@um.si",
+    "password": "$2b$10$NBLUx48afmzdokVTOznZn.Rc3Xl2du.pE7fdk.UWfddfivxrvJp4e",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:05:29.723Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776708348951",
+    "email": "test_materials_1776708348837@um.si",
+    "password": "$2b$10$9gcUsxTvvA.sMQ57Oo0Qmu5s5WAMC43lyBDWfLUJbhQtA2rNArImC",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:05:48.951Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776708389993",
+    "email": "test_materials_1776708389877@um.si",
+    "password": "$2b$10$TOu9rBnI0M90WB5PJON3lOg5tBtoo37iZ0NifGWWwj8sPa9lxnT8C",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:06:29.993Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776708535452",
+    "email": "test_materials_1776708535341@um.si",
+    "password": "$2b$10$2Bu1HHPUA.uMtChp3HN7xePsIyRVHIwe8rZW7YnrI0W3zz5yetDNG",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:08:55.452Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776708829183",
+    "email": "test_materials_1776708829043@um.si",
+    "password": "$2b$10$D3WenesL05dPD/Oox9JQVOB3RKLbAZw.hDrAlhvvKFj8cBFenlKr.",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:13:49.183Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776709044824",
+    "email": "test_materials_1776709044672@um.si",
+    "password": "$2b$10$4tyrxO.zqts1hTG6y.1U.eN3NomKxpmgWIXlC.bjnMKe4lMS4ZFRS",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:17:24.824Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776709462893",
+    "email": "test_materials_1776709462743@um.si",
+    "password": "$2b$10$DCBd.e7dWkgZqvHNntVn1uXX2w3BgLevSWXIIjiZOd.nbLtv.9H2q",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:24:22.893Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776709469251",
+    "email": "test_materials_1776709469129@um.si",
+    "password": "$2b$10$oLDcRR2xqPnzIJm0umlS9.1ma8WVj3cpVo9sd1oNrd8eFwFxug2sm",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:24:29.251Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776709598257",
+    "email": "test1@student.si",
+    "password": "$2b$10$4vwoGdhLKJyEsHIhQbfezOVdoRm.WWueAqU4Z6DPxzIt/Tj8RKfdq",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:26:38.257Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776710320266",
+    "email": "test_materials_1776710320146@um.si",
+    "password": "$2b$10$wqKQtvg0YNkQTCRBR9i.6u2rsmThVGduwXODHz40VDPSwknE5hNjq",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:38:40.266Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776710976751",
+    "email": "test_purchase_1776710976639@um.si",
+    "password": "$2b$10$/4/qrdORKwNuYANTdgSebOe9vxKX71J9FYLrdiQb2Awt9jzwTveaK",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:49:36.751Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776711201999",
+    "email": "test_purchase_1776711201858@um.si",
+    "password": "$2b$10$N8eIsHy9TRr5SBXIx2R9OuUKBzLfxAvIVi1fcLHV6DeXumN6dqqt6",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:53:21.999Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776711322882",
+    "email": "test_purchase_1776711322715@um.si",
+    "password": "$2b$10$U/RYhbA5yqjJdrMajRlhLuMtO4xyEgyjIUNLpuYlqNVgyLCCBFTKO",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T18:55:22.882Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776711749511",
+    "email": "test_purchase_1776711749351@um.si",
+    "password": "$2b$10$2hBi2aXJ5wMcWObCvFHeo.pceIP8rjbkC08v5nmTVvhHQRzFz/4wO",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T19:02:29.511Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776713401529",
+    "email": "test_purchase_1776713401387@um.si",
+    "password": "$2b$10$e6rTyYZNF5xeLPfKMdwIieQhp37kiMJyxhJ9Bs1.ndE0XfgxhpCay",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T19:30:01.529Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776713459914",
+    "email": "test_purchase_1776713459769@um.si",
+    "password": "$2b$10$EIUOqKoW1MCF9I8LumkmaeyFvuqRjn0JQSq0ibYMJM/WKCoiGY0Pe",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T19:30:59.914Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776714125909",
+    "email": "test_sync_1776714125774@um.si",
+    "password": "$2b$10$aDhAPYD..8mtdefSvAIJyu5QG4AiQihGDRJc.whSS6g8bABgtATU6",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T19:42:05.909Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776714173767",
+    "email": "test_gradiva_1776714173651@um.si",
+    "password": "$2b$10$9XZtsUz71JiIkQDEzIbTUOZTn3OJQLFiLaLaDNcH/P0HKD8fdBC8a",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T19:42:53.767Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776714324726",
+    "email": "final_test_1776714324618@um.si",
+    "password": "$2b$10$LTxBnZbIxlzwQaO/Q6qPNu3IgbY814exUlLM5x01eTJ.G3Tewld0u",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T19:45:24.726Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776716100181",
+    "email": "final_test_1776716100064@um.si",
+    "password": "$2b$10$vQNcoD3H5pDy9dLNNrfgBedV9hDXuI6Rt7LmECDo8XeDCEJcIDmW2",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T20:15:00.181Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776716193426",
+    "email": "final_test_1776716193314@um.si",
+    "password": "$2b$10$kT4XbroItUdTKXX6oBWn1O2X0Pn2urMeJ5G/IWDEMMHIUDwY1DHSe",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T20:16:33.426Z",
+    "profile": {
+      "temna_tema": false,
+      "obvestila": [
+        "vaje",
+        "predavanja"
+      ],
+      "pwa_personalizacija": true
+    }
+  },
+  {
+    "id": "1776716217278",
+    "email": "student_1776716217156@um.si",
+    "password": "$2b$10$Btvdw83sRdI6M4EL0HyKJ./EflNQvfTaa8hmYmT68.UYzNDZaWaWe",
+    "faks_id": "FERI",
+    "createdAt": "2026-04-20T20:16:57.278Z",
+    "profile": {
+      "temna_tema": true,
+      "obvestila": [
+        "predavanja",
+        "kolokviji"
+      ],
+      "pwa_personalizacija": true
+    }
+  }
+]

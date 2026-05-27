@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1776714125978",
+    "uporabnikId": "1776714125909",
+    "gradivoId": "1776708214284",
+    "razlog": "napacni_podatki",
+    "opis": "Gradivo vsebuje napačne informacije o datumih",
+    "status": "čakajočo",
+    "datumPrijave": "2026-04-20T19:42:05.978Z",
+    "datumPregleda": null,
+    "pregledanOd": null,
+    "odgovor": null
+  },
+  {
+    "id": "1776714324796",
+    "uporabnikId": "1776714324726",
+    "gradivoId": "1776708214284",
+    "razlog": "napacni_podatki",
+    "opis": "Test prijave",
+    "status": "čakajočo",
+    "datumPrijave": "2026-04-20T19:45:24.796Z",
+    "datumPregleda": null,
+    "pregledanOd": null,
+    "odgovor": null
+  },
+  {
+    "id": "1776716100256",
+    "uporabnikId": "1776716100181",
+    "gradivoId": "1776708214284",
+    "razlog": "napacni_podatki",
+    "opis": "Test prijave",
+    "status": "čakajočo",
+    "datumPrijave": "2026-04-20T20:15:00.256Z",
+    "datumPregleda": null,
+    "pregledanOd": null,
+    "odgovor": null
+  },
+  {
+    "id": "1776716193495",
+    "uporabnikId": "1776716193426",
+    "gradivoId": "1776708214284",
+    "razlog": "napacni_podatki",
+    "opis": "Test prijave",
+    "status": "čakajočo",
+    "datumPrijave": "2026-04-20T20:16:33.495Z",
+    "datumPregleda": null,
+    "pregledanOd": null,
+    "odgovor": null
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1776714125938",
+    "uporabnikId": "1776714125909",
+    "endpoint": "https://fcm.googleapis.com/fcm/send/test_1776714125936",
+    "expiration_time": null,
+    "keys": {
+      "p256dh": "test_p256dh_key",
+      "auth": "test_auth_key"
+    },
+    "datumRogistracije": "2026-04-20T19:42:05.938Z",
+    "aktivna": true
+  },
+  {
+    "id": "1776714324774",
+    "uporabnikId": "1776714324726",
+    "endpoint": "https://fcm.test/fcm_1776714324772",
+    "keys": {
+      "p256dh": "test",
+      "auth": "test"
+    },
+    "datumRogistracije": "2026-04-20T19:45:24.774Z",
+    "aktivna": true
+  },
+  {
+    "id": "1776716100232",
+    "uporabnikId": "1776716100181",
+    "endpoint": "https://fcm.test/fcm_1776716100227",
+    "keys": {
+      "p256dh": "test",
+      "auth": "test"
+    },
+    "datumRogistracije": "2026-04-20T20:15:00.232Z",
+    "aktivna": true
+  },
+  {
+    "id": "1776716193473",
+    "uporabnikId": "1776716193426",
+    "endpoint": "https://fcm.test/fcm_1776716193471",
+    "keys": {
+      "p256dh": "test",
+      "auth": "test"
+    },
+    "datumRogistracije": "2026-04-20T20:16:33.473Z",
+    "aktivna": true
+  }
+]

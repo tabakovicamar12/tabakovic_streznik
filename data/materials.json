@@ -1,0 +1,86 @@
+[
+  {
+    "id": "1779625379635",
+    "naziv": "Matematika I",
+    "opis": "Naloženo gradivo iz predavanj",
+    "predmet": "Matematika",
+    "profesor": "Janez Novak",
+    "slika": "uploads/materials/1779625379584-452181293-1777294434738-191869266-hv.png",
+    "tip": "Zapiski",
+    "cena": 0,
+    "dostupno": true,
+    "datumNaloga": "2026-05-24T12:22:59.635Z",
+    "datumAzuriranja": "2026-05-24T12:22:59.635Z",
+    "pdf": {
+      "originalnoIme": "1778568852266-214889505-Amar_Tabakovi___Naloga_7_Poro__ilo.pdf",
+      "sačuvanoPutanja": "C:\\Users\\amart\\Desktop\\ST_Vaje\\tabakovic_streznik\\uploads\\materials\\1779625379600-987228791-1778568852266-214889505-Amar_Tabakovi___Naloga_7_Poro__ilo.pdf",
+      "velicinaUB": 3500744
+    },
+    "ocena": 5,
+    "brojPregledavanja": 2,
+    "brojPreuzimanja": 1,
+    "korisnikId": 15,
+    "tagovi": [],
+    "detaljniPopis": {
+      "straniceUBroju": "Nepoznato",
+      "formatTeksta": "PDF",
+      "jezikGradiva": "Slovenski"
+    }
+  },
+  {
+    "id": "1779626771668",
+    "naziv": "Programiranje",
+    "opis": "Osnove programiranja",
+    "predmet": "Programiranje I",
+    "profesor": "Janez Novak",
+    "slika": "uploads/materials/1779626771638-79462481-1777292751551-561835953-hv.png",
+    "tip": "Zapiski",
+    "cena": 0,
+    "dostupno": true,
+    "datumNaloga": "2026-05-24T12:46:11.668Z",
+    "datumAzuriranja": "2026-05-24T12:46:11.668Z",
+    "pdf": {
+      "originalnoIme": "1779625379600-987228791-1778568852266-214889505-Amar_Tabakovi___Naloga_7_Poro__ilo.pdf",
+      "sačuvanoPutanja": "C:\\Users\\amart\\Desktop\\ST_Vaje\\tabakovic_streznik\\uploads\\materials\\1779626771648-232530454-1779625379600-987228791-1778568852266-214889505-Amar_Tabakovi___Naloga_7_Poro__ilo.pdf",
+      "velicinaUB": 3500744
+    },
+    "ocena": 5,
+    "brojPregledavanja": 1,
+    "brojPreuzimanja": 1,
+    "korisnikId": 15,
+    "tagovi": [],
+    "detaljniPopis": {
+      "straniceUBroju": "Nepoznato",
+      "formatTeksta": "PDF",
+      "jezikGradiva": "Slovenski"
+    }
+  },
+  {
+    "id": "1779627051851",
+    "naziv": "Programiranje 2",
+    "opis": "Opis",
+    "predmet": "Programiranje",
+    "profesor": "Janez Novak",
+    "slika": "uploads/materials/1779627051808-225900303-1777294434738-191869266-hv.png",
+    "tip": "Zapiski",
+    "cena": 0,
+    "dostupno": true,
+    "datumNaloga": "2026-05-24T12:50:51.851Z",
+    "datumAzuriranja": "2026-05-24T12:50:51.851Z",
+    "pdf": {
+      "originalnoIme": "1777308214908-923028426-gradivo_1777306571255.pdf",
+      "sačuvanoPutanja": "C:\\Users\\amart\\Desktop\\ST_Vaje\\tabakovic_streznik\\uploads\\materials\\1779627051829-818267921-1777308214908-923028426-gradivo_1777306571255.pdf",
+      "velicinaUB": 2765569
+    },
+    "ocena": 5,
+    "brojPregledavanja": 1,
+    "brojPreuzimanja": 1,
+    "korisnikId": 15,
+    "tagovi": [],
+    "detaljniPopis": {
+      "straniceUBroju": "Nepoznato",
+      "formatTeksta": "PDF",
+      "jezikGradiva": "Slovenski"
+    }
+  }
+]

@@ -1,0 +1,90 @@
+[
+  {
+    "id": "1776711322915",
+    "uporabnikId": "1776711322882",
+    "gradivoId": "1776708214284",
+    "cena": 250,
+    "stripeSessionId": "sess_1776711322915_8a6bus",
+    "status": "čakajočo",
+    "datumNakupa": "2026-04-20T18:55:22.915Z",
+    "datumPotrditve": null,
+    "datumPreuzimanja": null
+  },
+  {
+    "id": "1776711749542",
+    "uporabnikId": "1776711749511",
+    "gradivoId": "1776708214284",
+    "cena": 250,
+    "stripeSessionId": "sess_1776711749541_a3uc7",
+    "status": "čakajočo",
+    "datumNakupa": "2026-04-20T19:02:29.542Z",
+    "datumPotrditve": null,
+    "datumPreuzimanja": null
+  },
+  {
+    "id": "1776713401558",
+    "uporabnikId": "1776713401529",
+    "gradivoId": "1776708214284",
+    "cena": 250,
+    "stripeSessionId": "sess_1776713401558_emqn6",
+    "status": "čakajočo",
+    "datumNakupa": "2026-04-20T19:30:01.558Z",
+    "datumPotrditve": null,
+    "datumPreuzimanja": null
+  },
+  {
+    "id": "1776713459941",
+    "uporabnikId": "1776713459914",
+    "gradivoId": "1776708214284",
+    "cena": 250,
+    "stripeSessionId": "sess_1776713459940_mjsqyu",
+    "status": "potrjeno",
+    "datumNakupa": "2026-04-20T19:30:59.941Z",
+    "datumPotrditve": "2026-04-20T19:30:59.950Z",
+    "datumPreuzimanja": null
+  },
+  {
+    "id": "1776714125954",
+    "uporabnikId": "1776714125909",
+    "gradivoId": "1776708214284",
+    "cena": 250,
+    "stripeSessionId": "sess_1776714125954_stmppk",
+    "status": "potrjeno",
+    "datumNakupa": "2026-04-20T19:42:05.954Z",
+    "datumPotrditve": "2026-04-20T19:42:05.958Z",
+    "datumPreuzimanja": null
+  },
+  {
+    "id": "1776714324755",
+    "uporabnikId": "1776714324726",
+    "gradivoId": "1776708214284",
+    "cena": 250,
+    "stripeSessionId": "sess_1776714324755_8mah66",
+    "status": "potrjeno",
+    "datumNakupa": "2026-04-20T19:45:24.755Z",
+    "datumPotrditve": "2026-04-20T19:45:24.760Z",
+    "datumPreuzimanja": null
+  },
+  {
+    "id": "1776716100212",
+    "uporabnikId": "1776716100181",
+    "gradivoId": "1776708214284",
+    "cena": 250,
+    "stripeSessionId": "sess_1776716100212_llzwh7",
+    "status": "potrjeno",
+    "datumNakupa": "2026-04-20T20:15:00.212Z",
+    "datumPotrditve": "2026-04-20T20:15:00.216Z",
+    "datumPreuzimanja": null
+  },
+  {
+    "id": "1776716193454",
+    "uporabnikId": "1776716193426",
+    "gradivoId": "1776708214284",
+    "cena": 250,
+    "stripeSessionId": "sess_1776716193453_i124wh",
+    "status": "potrjeno",
+    "datumNakupa": "2026-04-20T20:16:33.454Z",
+    "datumPotrditve": "2026-04-20T20:16:33.458Z",
+    "datumPreuzimanja": null
+  }
+]

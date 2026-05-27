@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="sl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="stylee.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="login" style="height: 80vh;">
+        <div class="login-screen" id="auth-view">
+            <div class="auth-card">
+                <div id="login-container">
+                    <h2>Prijava</h2>
+                    <p class="subtitle">Vpišite se za dostop do gradiv</p>
+
+                    <form id="loginForm">
+                        <div class="input-group">
+                            <label>E-pošta</label>
+                            <input type="email" id="login-email" required placeholder="janez@primer.si">
+                            <small id="email-error" style="color: #ef4444; display: none;"></small>
+                        </div>
+                        <div class="input-group">
+                            <label>Geslo</label>
+                            <input type="password" id="login-pass" required placeholder="••••••••">
+                            <small id="pass-error" style="color: #ef4444; display: none;"></small>
+                        </div>
+                        <button type="submit" class="btn-auth">Login</button>
+                    </form>
+                    <p class="switch-text">Nimate računa? <a href="#" onclick="switchAuth('register')">Ustvari ga
+                            zdaj</a></p>
+                </div>
+
+                <div id="register-container" style="display: none;">
+                    <h2>Registracija</h2>
+                    <p class="subtitle">Ustvarite svoj StudyHub račun</p>
+
+                    <form id="registerForm">
+                        <div class="input-group">
+                            <label>E-pošta</label>
+                            <input type="email" id="reg-email" required placeholder="janez@primer.si">
+                            <small id="email-error" style="color: #ef4444; display: none;"></small>
+                        </div>
+                        <div class="input-group" style="position: relative;">
+                            <label>Univerza</label>
+                            <input type="text" id="universitySearchInput" placeholder="Išči ali izberi univerzo..."
+                                required autocomplete="off" style="width: 100%;">
+
+                            <input type="hidden" id="universityRegisterSelect" name="university" required>
+
+                            <div id="universityDropdownList" class="university-dropdown-list"
+                                style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; border-radius: 6px; max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Geslo</label>
+                            <input type="password" id="reg-pass" required placeholder="••••••••">
+                            <small id="pass-error" style="color: #ef4444; display: none;"></small>
+                        </div>
+                        <button type="submit" class="btn-auth">Create Account</button>
+                    </form>
+                    <p class="switch-text">Že imate račun? <a href="#" onclick="switchAuth('login')">Prijavite se</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar" style="display: none;">
+        <div class="nav-content">
+            <a href="#" style="text-decoration: none;">
+                <div class="logo">STUDY<span>HUB</span></div>
+            </a>
+
+            <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Išči gradivo...">
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn-add" onclick="showModal()">
+                    <i class="fas fa-plus"></i> Novo gradivo
+                </button>
+                <button class="btn-add" onclick="showModalSubject()">
+                    <i class="fas fa-plus"></i> Dodaj nov predmet
+                </button>
+                <button id="voice-btn" class="btn-add">
+                    <i class="fas fa-microphone"></i> Govorni ukaz
+                </button>
+
+                <div class="info-container">
+                    <button class="info-btn">i</button>
+                    <div class="info-tooltip">
+                        <strong>Glasovni Ukazi:</strong>
+                        <ul>
+                            <li>"Išči naslov gradiva"</li>
+                            <li>"Pojdi domov"</li>
+                            <li>"Osveži podatke"</li>
+                            <li>"Pokaži pomoč"</li>
+                            <li>"Prikaži svoje gradivo"</li>
+                            <li>"Pomoč"</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="profile-dropdown">
+                    <button class="profile-trigger" onclick="toggleProfileMenu()">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="nav-username">Profil</span>
+                        <i class="fas fa-chevron-down small-icon"></i>
+                    </button>
+                    <div id="profileMenu" class="dropdown-content">
+                        <a href="#" onclick="showSettings()"><i class="fas fa-cog"></i> Nastavitve</a>
+                        <a href="#" class="statistic-button" onclick="showStatistics()" style="display: none;"><i
+                                class="fas fa-chart-line"></i> Statistika</a>
+                        <a href="#" onclick="logout()" class="logout-link"><i class="fas fa-sign-out-alt"></i>
+                            Odjava</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="uploadModal" class="modal">
+        <input type="hidden" id="edit-id">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-upload"></i> Naloži novo gradivo</h3>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label>Naslov gradiva</label>
+                    <input type="text" name="naziv" required placeholder="npr. Zapiski za Matematiko 1">
+                </div>
+
+                <div class="input-group">
+                    <label>Opis</label>
+                    <textarea name="opis" required placeholder="Na kratko opiši vsebino..."></textarea>
+                </div>
+
+                <div class="grid-inputs">
+                    <div class="input-group" style="position: relative;">
+                        <label>Predmet</label>
+                        <input type="text" id="subjectSearchInput" placeholder="Išči ali izberi predmet..." required
+                            autocomplete="off" style="width: 100%;">
+
+                        <input type="hidden" id="materialSubjectSelect" name="predmet" required>
+
+                        <div id="subjectDropdownList" class="subject-dropdown-list"
+                            style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; border-radius: 6px; max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Profesor</label>
+                        <input type="text" name="profesor" required placeholder="npr. dr. Janez Novak">
+                    </div>
+                </div>
+
+
+                <div class="files-uploader" style="display: flex;gap: 10px;">
+                    <div class="file-upload-wrapper">
+                        <label for="image-file" class="file-label image-label">
+                            <i class="fas fa-image"></i>
+                            <span>Izberi naslovno sliko (neobvezno)</span>
+                            <input type="file" id="image-file" name="slika" accept="image/*"
+                                onchange="updateImageName(this)">
+                        </label>
+                        <small id="image-name-display" class="file-name-hint"></small>
+                    </div>
+
+                    <div class="file-upload-wrapper">
+                        <label for="pdf-file" class="file-label">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Izberi PDF datoteko</span>
+                            <input type="file" id="pdf-file" name="pdf" accept=".pdf" required
+                                onchange="updateFileName(this)">
+                        </label>
+                        <small id="file-name-display"></small>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-auth">
+                    <i class="fas fa-cloud-upload-alt"></i> Objavi gradivo
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="openSubjectForm" class="modal">
+        <div class="modal-content modal-content-small">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus-circle"></i> Dodaj nov predmet</h3>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+
+            <form id="addSubjectForm" onsubmit="handleSubjectSubmit(event)">
+                <div class="input-group">
+                    <label for="subjectName">Ime predmeta</label>
+                    <input type="text" id="subjectName" name="name" required placeholder="npr. Programiranje 2">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn-auth" style="width: 100%; padding: 10px 20px;">
+                        <i class="fas fa-save"></i> Shrani predmet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" style="display: none;">
+        <div class="shop-header">
+            <h2>Aktualna ponudba</h2>
+            <p>Velika ponudba zapiskov ter gradiva dostopna takoj.</p>
+
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="filterData('all', this)">
+                    <i class="fas fa-th-large"></i> Vsa gradiva
+                </button>
+                <button class="tab-btn my-data" onclick="filterData('my', this)">
+                    <i class="fas fa-user-edit"></i> Moja gradiva
+                </button>
+                <button class="tab-btn" onclick="filterData('my', this)">
+                    <i class="fas fa-shopping-bag"></i> Kupljena gradiva
+                </button>
+            </div>
+        </div>
+        <main id="materials-grid" class="grid-container"></main>
+
+        <div class="pagination-container">
+            <div id="pagination-info">Prikazano 1 - 12 od 34</div>
+            <div id="pagination-controls" class="pagination-buttons">
+            </div>
+        </div>
+    </div>
+
+    <div id="statistics-view" class="container" style="display: none;">
+        <button class="btn-back" onclick="backToShop()">
+            <i class="fas fa-arrow-left"></i> Nazaj
+        </button>
+
+        <div class="shop-header">
+            <h2>Statistika</h2>
+            <p>Ogled statistike uporabe.</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e0e7ff; color: #4338ca;">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-details">
+                    <span class="stat-label">Skupaj gradiv</span>
+                    <h3 id="stat-materials">0</h3>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fef3c7; color: #d97706;">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-details">
+                    <span class="stat-label">Povprečna ocena</span>
+                    <h3 id="stat-rating">0.00</h3>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #dcfce7; color: #059669;">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-details">
+                    <span class="stat-label">Skupaj prenosov</span>
+                    <h3 id="stat-purchases">0</h3>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fee2e2; color: #dc2626;">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="stat-details">
+                    <span class="stat-label">Mnenja študentov</span>
+                    <h3 id="stat-reviews">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-more-info">
+            <div class="stat-list-card">
+                <h3><i class="fas fa-university"></i> Predmeti z gradivi</h3>
+                <ul id="stat-subjects-list" class="stat-list">
+                </ul>
+            </div>
+
+            <div class="stat-list-card">
+                <h3><i class="fas fa-user-graduate"></i> Aktivni profesorji</h3>
+                <ul id="stat-professors-list" class="stat-list">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="profile-view" class="container" style="display: none;">
+        <button class="btn-back" onclick="backToShop()">
+            <i class="fas fa-arrow-left"></i> Nazaj
+        </button>
+
+        <div class="shop-header">
+            <h2>Moj Profil</h2>
+            <p>Upravljajte s svojimi podatki in varnostjo računa.</p>
+        </div>
+
+        <div class="profile-layout">
+            <div class="profile-card info-card">
+                <h3><i class="fas fa-id-card"></i> Osebni podatki</h3>
+                <div class="info-group">
+                    <label>E-pošta</label>
+                    <p id="profile-email">Nalaganje...</p>
+                </div>
+                <div class="info-group">
+                    <label>Univerza (ID)</label>
+                    <p id="profile-uni">Nalaganje...</p>
+                </div>
+                <div class="info-group">
+                    <label>Vloga</label>
+                    <span id="profile-role" class="badge-role">Student</span>
+                </div>
+                <div class="info-group">
+                    <label>Član od</label>
+                    <p id="profile-date">Nalaganje...</p>
+                </div>
+            </div>
+
+            <div class="profile-card password-card">
+                <h3><i class="fas fa-key"></i> Sprememba gesla</h3>
+                <form id="changePasswordForm">
+                    <div class="input-group">
+                        <label>Trenutno geslo</label>
+                        <input type="password" id="currentPassword" required placeholder="••••••••">
+                    </div>
+                    <div class="input-group">
+                        <label>Novo geslo</label>
+                        <input type="password" id="newPassword" required placeholder="Najmanj 6 znakov">
+                    </div>
+                    <button type="submit" class="btn-auth">Posodobi geslo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="material-detail-view" class="container" style="display: none;">
+        <button class="btn-back" onclick="backToShop()">
+            <i class="fas fa-arrow-left"></i> Nazaj
+        </button>
+
+        <div class="material-detail-layout">
+            <div class="material-image-large">
+                <img id="detail-image" src="" alt="Gradivo">
+            </div>
+
+            <div class="material-info-card">
+                <h1 id="detail-title">Naslov gradiva</h1>
+                <div class="detail-meta">
+                    <span id="detail-price" class="price-tag">0.00 €</span>
+                    <span id="detail-views" class="views-tag"><i class="fas fa-eye"></i> 0</span>
+                </div>
+
+                <div class="detail-description">
+                    <h3>Opis gradiva</h3>
+                    <p id="detail-desc">Nalaganje opisa...</p>
+                </div>
+
+                <div class="detail-actions">
+                    <button id="read-pdf-btn" class="btn-auth" style="display: none;">
+                        <i class="fa-solid fa-file-pdf"></i> Preberi gradivo
+                    </button>
+                    <button class="btn-add">Dodaj v košarico</button>
+                    <button id="download-button" class="btn-download">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-section" style="margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <h2>Ocene in mnenja</h2>
+
+            <div id="reviews-stats" style="margin-bottom: 20px; color: #475569;">
+                <span id="average-rating-display" style="font-size: 24px; font-weight: bold; color: #f59e0b;">0.00
+                    ★</span>
+                <span id="total-reviews-display" style="margin-left: 10px;">(0 mnenj)</span>
+            </div>
+
+            <div id="reviews-list" style="margin-bottom: 30px;">
+            </div>
+
+            <div id="add-review-form-container" class="review-card"
+                style="margin-bottom: 10px;background: #ffffff; padding: 30px; border-radius: 20px; border: 1px solid #f1f5f9; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);">
+                <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 1.2rem; color: #1e293b; font-weight: 600;">
+                    Napiši mnenje</h3>
+                <form id="addReviewForm">
+                    <div class="input-group"
+                        style="margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;">
+                        <label for="review-rating" style="font-size: 0.95rem; font-weight: 600; color: #1e293b;">Ocena
+                            (1-5):</label>
+                        <select id="review-rating" required
+                            style="width: 100%; padding: 14px 16px; border-radius: 12px; background-color: #f4f4f7; border: none; font-size: 1rem; color: #334155; outline: none; font-family: inherit; box-sizing: border-box;">
+                            <option value="5">5 ★★★★★ (Odlično)</option>
+                            <option value="4">4 ★★★★☆ (Zelo dobro)</option>
+                            <option value="3">3 ★★★☆☆ (Dobro)</option>
+                            <option value="2">2 ★★☆☆☆ (Slabo)</option>
+                            <option value="1">1 ★☆☆☆☆ (Zelo slabo)</option>
+                        </select>
+                    </div>
+                    <div class="input-group"
+                        style="margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;">
+                        <label for="review-comment"
+                            style="font-size: 0.95rem; font-weight: 600; color: #1e293b;">Komentar (neobvezno):</label>
+                        <textarea id="review-comment" rows="4" placeholder="Kakšno se vam zdi to gradivo..."
+                            style="width: 100%; padding: 14px 16px; border-radius: 12px; background-color: #f4f4f7; border: none; font-size: 1rem; color: #334155; outline: none; font-family: inherit; resize: vertical; box-sizing: border-box;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-auth"
+                        style="width: auto; padding: 14px 28px; background-color: #6366f1; color: white; font-size: 1rem; font-weight: 600; border-radius: 14px; border: none; cursor: pointer; transition: background-color 0.2s; display: inline-block;">
+                        Oddaj mnenje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"
+        style="position: fixed; top: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 12px;">
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
