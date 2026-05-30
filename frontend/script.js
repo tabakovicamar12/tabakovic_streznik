@@ -1066,6 +1066,7 @@ function getMaterialImageUrl(imagePath) {
 
 function displayCards(data) {
     grid.innerHTML = '';
+    const currentUser = JSON.parse(localStorage.getItem('user') || 'null');
     data.gradiva.forEach(item => {
         const card = document.createElement('div');
         const imageUrl = getMaterialImageUrl(item.slikaPath || item.slika);
@@ -1073,15 +1074,24 @@ function displayCards(data) {
 
         const finalSrc = imageUrl ? imageUrl : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
+        const canManage = currentUser && (currentUser.id === item.korisnikId || currentUser.role === 'admin');
+        const actionsHtml = canManage ? `
+                    <div class="card-footer" style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="btn-add" onclick="event.stopPropagation(); openEditModal('${itemId}')" style="flex-grow: 1;">Uredi</button>
+                        <button class="btn-delete" onclick="event.stopPropagation(); izbrisiMaterial('${itemId}')" style="background: #fee2e2; color: #ef4444; border: none; padding: 10px; border-radius: 10px; cursor: pointer;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>` : '';
+
         card.className = 'card';
         card.setAttribute('data-id', itemId);
         card.innerHTML = `
                 <div class="card-image-wrapper">
                     <span class="badge">${item.dostupno ? 'Na zalogi' : 'Ni na voljo'}</span>
-                    <img 
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" 
-                        data-src="${finalSrc}" 
-                        alt="${item.naziv}" 
+                    <img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+                        data-src="${finalSrc}"
+                        alt="${item.naziv}"
                         class="card-image lazy"
                         onerror="this.onerror=null; this.removeAttribute('data-src'); this.classList.remove('lazy'); this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';"
                     >
@@ -1090,12 +1100,7 @@ function displayCards(data) {
                     <h3 class="card-title">${item.naziv}</h3>
                     <div class="card-price">${item.cena} €</div>
                     <p class="card-description">${item.opis ? item.opis.substring(0, 60) + '...' : 'Brez opisa.'}</p>
-                    <div class="card-footer" style="margin-top: 15px; display: flex; gap: 10px;">
-                        <button class="btn-add" onclick="event.stopPropagation(); openEditModal('${itemId}')" style="flex-grow: 1;">Uredi</button>
-                        <button class="btn-delete" onclick="event.stopPropagation(); izbrisiMaterial('${itemId}')" style="background: #fee2e2; color: #ef4444; border: none; padding: 10px; border-radius: 10px; cursor: pointer;">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+                    ${actionsHtml}
                 </div>
             `;
         card.onclick = () => prikaziPodrobnosti(itemId);

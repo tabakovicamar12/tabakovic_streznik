@@ -240,6 +240,13 @@ router.put('/:id', authenticateToken, uploadConfig, async (req, res) => {
             return res.status(404).json({ napaka: "Gradivo ni najdeno" });
         }
 
+        if (gradivo.korisnikId !== req.user.id && req.user.role !== 'admin') {
+            return res.status(403).json({
+                napaka: "Nimate dovoljenja za urejanje tega gradiva",
+                opis: "Urejate lahko samo gradiva, ki ste jih sami naložili."
+            });
+        }
+
         const updateData = {
             ...req.body,
             slikaPath: req.files['slika'] ? req.files['slika'][0].filename : gradivo.slikaPath,
@@ -264,6 +271,13 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 
         if (!gradivo) {
             return res.status(404).json({ napaka: "Gradivo ni najdeno" });
+        }
+
+        if (gradivo.korisnikId !== req.user.id && req.user.role !== 'admin') {
+            return res.status(403).json({
+                napaka: "Nimate dovoljenja za brisanje tega gradiva",
+                opis: "Brišete lahko samo gradiva, ki ste jih sami naložili."
+            });
         }
 
         const izbrisano = await materialStore.deleteMaterial(req.params.id);
