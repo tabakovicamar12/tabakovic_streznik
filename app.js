@@ -29,7 +29,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', (req, res, next) => {
+    if (path.extname(req.path).toLowerCase() === '.pdf') {
+        return res.status(403).json({ napaka: 'PDF datoteke so dostopne samo prek preverjenega prenosa.' });
+    }
+    next();
+}, express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -37,6 +42,7 @@ var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var materialsRouter = require('./routes/materials');
 var paymentsRouter = require('./routes/payments');
+var cartPaymentsRouter = require('./routes/cartPayments');
 var purchaseRouter = require('./routes/purchase');
 var subjectRouter = require('./routes/subject');
 var syncRouter = require('./routes/sync');
@@ -48,6 +54,7 @@ app.use('/users', usersRouter);
 app.use(`${apiPrefix}/auth`, authRouter);
 app.use(`${apiPrefix}/materials`, materialsRouter);
 app.use(`${apiPrefix}/payments`, paymentsRouter);
+app.use(`${apiPrefix}/cart-payments`, cartPaymentsRouter);
 app.use(`${apiPrefix}/purchases`, purchaseRouter);
 app.use(`${apiPrefix}/sync`, syncRouter);
 app.use(`${apiPrefix}/moderation`, moderationRouter);

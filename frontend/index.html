@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="stylee.css">
+    <link rel="stylesheet" href="cart-navigation.css">
     <title>Document</title>
 </head>
 
@@ -83,6 +84,10 @@
             </div>
 
             <div class="nav-actions">
+                <a class="cart-nav-link" href="/cart.html">
+                    <i class="fas fa-shopping-cart"></i> Košarica
+                    <span id="cart-count" class="cart-count">0</span>
+                </a>
                 <button class="btn-add" onclick="showModal()">
                     <i class="fas fa-plus"></i> Novo gradivo
                 </button>
@@ -237,7 +242,7 @@
                 <button class="tab-btn my-data" onclick="filterData('my', this)">
                     <i class="fas fa-user-edit"></i> Moja gradiva
                 </button>
-                <button class="tab-btn" onclick="filterData('my', this)">
+                <button class="tab-btn" onclick="filterData('purchased', this)">
                     <i class="fas fa-shopping-bag"></i> Kupljena gradiva
                 </button>
             </div>
@@ -393,7 +398,7 @@
                     <button id="read-pdf-btn" class="btn-auth" style="display: none;">
                         <i class="fa-solid fa-file-pdf"></i> Preberi gradivo
                     </button>
-                    <button class="btn-add">Dodaj v košarico</button>
+                    <button id="add-to-cart-button" class="btn-add">Dodaj v košarico</button>
                     <button id="download-button" class="btn-download">
                         <i class="fa-solid fa-download"></i>
                     </button>
@@ -453,6 +458,7 @@
 
 
     <script src="script.js"></script>
+    <script src="cart-storage.js"></script>
 </body>
 
 </html>

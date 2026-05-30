@@ -4,6 +4,7 @@ const multer = require('multer');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const materialStore = require('../models/materialStore');
+const cartPaymentAccess = require('../models/cartPaymentAccess');
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -209,17 +210,27 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.get('/:id/download', async (req, res) => {
+router.get('/:id/download', authenticateToken, async (req, res) => {
     try {
-        const downloadInfo = await materialStore.downloadMaterial(req.params.id);
+        const gradivo = await materialStore.getMaterialById(req.params.id);
 
-        if (!downloadInfo) {
+        if (!gradivo) {
+            return res.status(404).json({ napaka: "Gradivo ni najdeno" });
+        }
+
+        if (!await cartPaymentAccess.canDownload(req.user, gradivo)) {
+            return res.status(403).json({ napaka: "Gradivo morate pred prenosom kupiti" });
+        }
+
+        const filePath = cartPaymentAccess.resolveMaterialFile(gradivo.pdfPath);
+        if (!filePath) {
             return res.status(404).json({
                 napaka: "Gradivo ali datoteka ni najdena"
             });
         }
 
-        res.download(downloadInfo.filePath, downloadInfo.fileName, (err) => {
+        await materialStore.incrementViewCount(req.params.id);
+        res.download(filePath, `${gradivo.naziv}.pdf`, (err) => {
             if (err) console.error('Napaka pri prenosu:', err);
         });
 

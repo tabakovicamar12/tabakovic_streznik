@@ -1,0 +1,26 @@
+.cart-nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    background: #eef2ff;
+    color: #4338ca;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
+.cart-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #4338ca;
+    color: white;
+    font-size: 0.75rem;
+}

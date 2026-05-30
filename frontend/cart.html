@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="cart-navigation.css">
+    <link rel="stylesheet" href="cart.css">
+    <title>StudyHub - Košarica</title>
+</head>
+<body>
+    <header class="cart-header">
+        <a class="brand" href="/">STUDY<span>HUB</span></a>
+        <a class="back-link" href="/"><i class="fas fa-arrow-left"></i> Nazaj na gradiva</a>
+    </header>
+
+    <main class="cart-layout">
+        <section class="cart-card">
+            <p class="eyebrow">KOŠARICA</p>
+            <h1>Izbrana gradiva</h1>
+            <div id="cart-message" class="message" hidden></div>
+            <div id="cart-items" class="cart-items"></div>
+        </section>
+
+        <aside class="summary-card">
+            <p class="eyebrow">POVZETEK</p>
+            <div class="summary-row">
+                <span>Število gradiv</span>
+                <strong id="summary-count">0</strong>
+            </div>
+            <div class="summary-row total-row">
+                <span>Skupaj</span>
+                <strong id="summary-total">0,00 €</strong>
+            </div>
+            <button id="checkout-button" class="checkout-button">
+                <i class="fas fa-lock"></i> Nadaljuj na plačilo
+            </button>
+            <div id="demo-confirmation" class="demo-box" hidden>
+                <strong>Razvojni demo način</strong>
+                <p>Kartica ni potrebna. Potrdi simulirano plačilo za lokalni preizkus.</p>
+                <button id="confirm-demo-button" class="confirm-button">Potrdi demo plačilo</button>
+            </div>
+        </aside>
+    </main>
+
+    <script src="cart-storage.js"></script>
+    <script src="cart.js"></script>
+</body>
+</html>

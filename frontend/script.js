@@ -924,7 +924,7 @@ function switchAuth(type) {
     }
 }
 
-function filterData(type, element) {
+async function filterData(type, element) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     element.classList.add('active');
 
@@ -934,6 +934,20 @@ function filterData(type, element) {
     let filtrirano;
     if (type === 'my') {
         filtrirano = all_data.filter(item => item.korisnikId === user.id);
+    } else if (type === 'purchased') {
+        try {
+            const response = await fetch('/api/v1/cart-payments/library', {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.napaka || 'Napaka pri pridobivanju kupljenih gradiv.');
+
+            const purchasedIds = new Set(data.materialIds || []);
+            filtrirano = all_data.filter(item => purchasedIds.has(item.id));
+        } catch (error) {
+            showCustomNotification(error.message, 'error');
+            filtrirano = [];
+        }
     } else {
         filtrirano = all_data;
     }
@@ -943,7 +957,7 @@ function filterData(type, element) {
     if (filtrirano.length === 0) {
         grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">
             <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 15px; display: block; opacity: 0.5;"></i>
-            Nimate še naloženih lastnih gradiv.
+            ${type === 'purchased' ? 'Nimate se kupljenih gradiv.' : 'Nimate se nalozenih lastnih gradiv.'}
         </div>`;
     }
 }
@@ -1242,6 +1256,11 @@ window.prikaziPodrobnosti = async function (id) {
         const btnDownload = document.getElementById('download-button');
         if (btnDownload) {
             btnDownload.onclick = () => downloadFile(id);
+        }
+
+        const btnAddToCart = document.getElementById('add-to-cart-button');
+        if (btnAddToCart) {
+            btnAddToCart.onclick = () => addMaterialToCart(item.id);
         }
 
         loadReviews(id);
