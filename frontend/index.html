@@ -83,7 +83,15 @@
                 <input type="text" id="searchInput" placeholder="Išči gradivo...">
             </div>
 
-            <div class="nav-actions">
+            <button id="burger-btn" class="burger-btn" aria-label="Meni" onclick="toggleBurger()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div id="nav-backdrop" class="nav-backdrop" onclick="toggleBurger()"></div>
+
+            <div class="nav-actions" id="nav-actions">
                 <a class="cart-nav-link" href="/cart.html">
                     <i class="fas fa-shopping-cart"></i> Košarica
                     <span id="cart-count" class="cart-count">0</span>
@@ -459,6 +467,42 @@
 
     <script src="script.js"></script>
     <script src="cart-storage.js"></script>
+    <script>
+        function toggleBurger() {
+            var nav = document.getElementById('nav-actions');
+            var backdrop = document.getElementById('nav-backdrop');
+            var btn = document.getElementById('burger-btn');
+            var isOpen = nav.classList.toggle('open');
+            backdrop.classList.toggle('open', isOpen);
+            btn.classList.toggle('open', isOpen);
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        }
+
+        document.addEventListener('click', function (e) {
+            var nav = document.getElementById('nav-actions');
+            if (!nav || !nav.classList.contains('open')) return;
+            if (window.innerWidth > 768) return;
+            var target = e.target;
+            if (target.closest('.nav-actions a') || target.closest('.nav-actions .btn-add') ||
+                target.closest('.dropdown-content a')) {
+                setTimeout(function () {
+                    if (nav.classList.contains('open')) toggleBurger();
+                }, 50);
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 768) {
+                var nav = document.getElementById('nav-actions');
+                var backdrop = document.getElementById('nav-backdrop');
+                var btn = document.getElementById('burger-btn');
+                if (nav) nav.classList.remove('open');
+                if (backdrop) backdrop.classList.remove('open');
+                if (btn) btn.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
 </body>
 
 </html>

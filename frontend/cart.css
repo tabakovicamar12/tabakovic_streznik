@@ -174,13 +174,60 @@ h1 {
     .cart-layout {
         grid-template-columns: 1fr;
         margin: 24px auto;
+        padding: 0 16px;
+        gap: 16px;
+    }
+
+    .cart-header {
+        padding: 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .brand {
+        font-size: 1.25rem;
+    }
+
+    .back-link {
+        font-size: 0.88rem;
+    }
+
+    .cart-card,
+    .summary-card {
+        padding: 20px;
+        border-radius: 14px;
     }
 
     .cart-item {
         flex-direction: column;
+        gap: 12px;
     }
 
     .item-actions {
         justify-content: space-between;
+        white-space: normal;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 420px) {
+    .cart-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    .cart-card,
+    .summary-card {
+        padding: 16px;
+    }
+
+    .checkout-button,
+    .confirm-button {
+        font-size: 0.95rem;
+        padding: 12px;
     }
 }

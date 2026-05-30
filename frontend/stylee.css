@@ -336,6 +336,57 @@ body {
     gap: 15px;
 }
 
+.burger-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 32px;
+    height: 26px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    z-index: 1500;
+}
+
+.burger-btn span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: var(--text-dark);
+    border-radius: 3px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+}
+
+.burger-btn.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.burger-btn.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-btn.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 1100;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-backdrop.open {
+    display: block;
+    opacity: 1;
+}
+
 .profile-dropdown {
     position: relative;
     display: inline-block;
@@ -987,12 +1038,18 @@ textarea {
 @media (max-width: 1024px) {
     .material-detail-layout {
         grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 25px;
+    }
+
+    .material-image-large img {
+        max-height: 350px;
     }
 }
 
 @media (max-width: 768px) {
     body {
-        padding-top: 140px;
+        padding-top: 130px;
     }
 
     .navbar {
@@ -1001,34 +1058,99 @@ textarea {
     }
 
     .nav-content {
-        flex-direction: column;
+        flex-wrap: wrap;
         gap: 10px;
         padding: 0 15px;
+        align-items: center;
+    }
+
+    .logo {
+        order: 1;
+        flex: 1;
+    }
+
+    .burger-btn {
+        display: flex;
+        order: 2;
     }
 
     .search-wrapper {
         width: 100%;
         max-width: 100%;
         order: 3;
-    }
-
-    .logo {
-        order: 1;
+        flex-grow: 1;
+        flex-basis: 100%;
     }
 
     .nav-actions {
-        order: 2;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: min(300px, 85vw);
+        height: 100vh;
+        background: #ffffff;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 14px;
+        padding: 80px 20px 24px 20px;
+        box-shadow: -8px 0 24px rgba(15, 23, 42, 0.12);
+        transition: right 0.3s ease;
+        z-index: 1200;
+        overflow-y: auto;
+    }
+
+    .nav-actions.open {
+        right: 0;
+    }
+
+    .nav-actions .btn-add,
+    .nav-actions .cart-nav-link,
+    .nav-actions .profile-trigger {
         width: 100%;
-        justify-content: space-between;
+        justify-content: flex-start;
+        padding: 12px 14px;
+        font-size: 0.95rem;
+        border-radius: 12px;
+    }
+
+    .nav-actions .info-container {
+        align-self: flex-end;
+    }
+
+    .info-tooltip {
+        width: min(260px, calc(100vw - 60px));
+        left: auto;
+        right: 0;
+        transform: none;
+    }
+
+    .info-tooltip::after {
+        left: auto;
+        right: 12px;
+        margin-left: 0;
+    }
+
+    .profile-dropdown {
+        width: 100%;
+    }
+
+    .dropdown-content {
+        position: static;
+        width: 100%;
+        margin-top: 8px;
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
     }
 
     .btn-add {
-        padding: 8px 16px;
+        padding: 10px 14px;
         font-size: 0.9rem;
     }
 
     .profile-layout {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
 
     .grid-inputs {
@@ -1038,12 +1160,56 @@ textarea {
     .modal-content {
         margin: 10px auto;
         padding: 20px;
+        width: 92%;
+    }
+
+    .files-uploader {
+        flex-direction: column;
+        gap: 10px !important;
+    }
+
+    .info-tooltip {
+        width: min(280px, calc(100vw - 30px));
+        left: auto;
+        right: 0;
+        transform: none;
+    }
+
+    .info-tooltip::after {
+        left: auto;
+        right: 12px;
+        margin-left: 0;
+    }
+
+    .detail-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .detail-actions .btn-auth,
+    .detail-actions .btn-add,
+    .detail-actions .btn-download {
+        width: 100%;
+        text-align: center;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
+    }
+
+    #add-review-form-container {
+        padding: 20px !important;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 480px) {
     body {
-        padding-top: 150px;
+        padding-top: 130px;
     }
 
     .grid-container {
@@ -1056,6 +1222,7 @@ textarea {
 
     .filter-tabs {
         flex-wrap: unset !important;
+        gap: 6px;
     }
 
     .fa-th-large,
@@ -1068,20 +1235,84 @@ textarea {
         max-height: 250px;
     }
 
+    .material-detail-layout {
+        padding: 15px;
+        border-radius: 15px;
+    }
+
     .auth-card {
         padding: 25px;
+        border-radius: 18px;
     }
 
-    .nav-actions {
-        gap: 8px;
-    }
-
-    .profile-trigger span {
-        display: none;
+    .auth-card h2 {
+        font-size: 1.6rem;
     }
 
     .tab-btn {
-        padding: 8px 16px;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .modal-content {
+        padding: 18px;
+        margin: 10px auto;
+        border-radius: 16px;
+    }
+
+    .modal-header h3 {
+        font-size: 1.05rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-more-info {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .price-tag {
+        font-size: 1.25rem;
+    }
+
+    #detail-title {
+        font-size: 1.4rem;
+    }
+
+    .page-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .pagination-button {
+        padding: 10px 10px;
         font-size: 0.85rem;
+    }
+
+    #add-review-form-container {
+        padding: 16px !important;
+    }
+
+    .file-label {
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 360px) {
+    body {
+        padding-top: 130px;
+    }
+
+    .logo {
+        font-size: 1.25rem;
     }
 }

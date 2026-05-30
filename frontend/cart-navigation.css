@@ -24,3 +24,11 @@
     color: white;
     font-size: 0.75rem;
 }
+
+@media (max-width: 480px) {
+    .cart-nav-link {
+        padding: 8px 10px;
+        font-size: 0.82rem;
+        gap: 6px;
+    }
+}
