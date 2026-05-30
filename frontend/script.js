@@ -227,92 +227,163 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+// Voice control: click button OR hold V for push-to-talk.
+const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
 const synth = window.speechSynthesis;
-
-recognition.continuous = false;
-recognition.lang = "sl-SI";
-recognition.interimResults = false;
-
 const voiceBtn = document.getElementById('voice-btn');
 
+let recognition = null;
+let listening = false;
+
 function speak(text) {
+    if (!synth) return;
+    synth.cancel();
     const utterThis = new SpeechSynthesisUtterance(text);
     utterThis.lang = 'sl-SI';
     synth.speak(utterThis);
 }
 
-function processVoiceCommand(command) {
-    const text = command.toLowerCase();
-    console.log("Prepoznan ukaz:", text);
-    if (text.includes("išči") || text.includes("iskanje")) {
-        const query = text.replace("išči", "").replace("iskanje", "").trim();
-        if (query) {
-            searchFunction({ target: { value: query } });
-            speak(`Iščem gradivo ${query}`);
+function isTypingInField() {
+    const a = document.activeElement;
+    if (!a) return false;
+    const tag = a.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || a.isContentEditable;
+}
+
+function anyModalOpen() {
+    const modals = document.querySelectorAll('.modal');
+    return [...modals].some(m => m.style.display && m.style.display !== 'none');
+}
+
+function setListening(on) {
+    listening = on;
+    if (!voiceBtn) return;
+    voiceBtn.style.boxShadow = on ? '0 0 15px red' : 'none';
+}
+
+function ensureRecognition() {
+    if (recognition) return recognition;
+    if (!SpeechRecognitionCtor) return null;
+    const r = new SpeechRecognitionCtor();
+    r.lang = 'sl-SI';
+    r.continuous = false;
+    r.interimResults = false;
+    r.maxAlternatives = 3;
+
+    r.onstart = () => setListening(true);
+    r.onend = () => setListening(false);
+    r.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        processVoiceCommand(transcript);
+    };
+    r.onerror = (e) => {
+        setListening(false);
+        if (e.error === 'no-speech') {
+            speak('Nisem slišal.');
+        } else if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+            showCustomNotification('Mikrofon ni dovoljen. Dovolite dostop v brskalniku.', 'error');
+        } else if (e.error === 'network') {
+            showCustomNotification('Glasovni ukazi potrebujejo internet in dostop do Googlove storitve (uporabite Chrome z internetom).', 'error');
+        } else if (e.error !== 'aborted') {
+            showCustomNotification(`Napaka mikrofona: ${e.error}`, 'error');
         }
-    }
+    };
+    recognition = r;
+    return r;
+}
 
-    else if (text.includes("domov") || text.includes("začetek")) {
-        speak("Vračam se na prvo stran.");
-        setTimeout(() => window.location.href = "/", 1000);
+function startListening() {
+    if (listening) return;
+    if (!SpeechRecognitionCtor) {
+        showCustomNotification('Glasovno upravljanje ni podprto v tem brskalniku.', 'error');
+        return;
     }
-    else if (text.includes("dodaj gradivo") || text.includes("dodaj")) {
-        showModal();
-        speak("Odpiram modalno okno za dodajanje gradiva.");
+    if (!navigator.onLine) {
+        showCustomNotification('Brez interneta — glasovni ukazi niso na voljo.', 'error');
+        return;
     }
-
-    else if (text.includes("osveži") || text.includes("refresh")) {
-        naloziPodatke();
-        showPagnation();
-        speak("Osvežujem prikaz.");
-    }
-
-    else if (text.includes("pokaži pomoč")) {
-        simulateHoverEffect();
-        speak("Prikaz pomoči.");
-    }
-
-    else if (text.includes("moje gradivo") || text.includes("moja gradiva")) {
-        filterData('my', document.querySelector('.my-data'));
-        speak("Prikaz tvojega gradiva.");
-    }
-
-    else if (text.includes("pomoč")) {
-        speak("Lahko rečete: išči ter naslov gradiva, pojdi domov, osveži podatke, dodaj gradivo, prikaz mojega gradiva ali pokaži pomoč.");
-    }
-    else {
-        speak("Ukaza ne razumem. Poskusite znova.");
+    const r = ensureRecognition();
+    synth?.cancel();
+    try {
+        r.start();
+    } catch {
+        // already started — Chrome throws on double start, ignore
     }
 }
 
-voiceBtn.onclick = () => {
-    try {
-        recognition.start();
-    } catch (e) {
-        console.log("Prepoznava že teče.");
+function stopListening() {
+    if (!listening) return;
+    try { recognition?.stop(); } catch {}
+}
+
+function processVoiceCommand(command) {
+    const text = command.toLowerCase().replace(/[.,!?;:"']/g, '').replace(/\s+/g, ' ').trim();
+    console.log('Prepoznan ukaz:', text);
+
+    let m;
+    if ((m = text.match(/^(?:i[sš]či|iskanje)(?:\s+po\s+naslovu(?:\s+gradiva)?)?\s+(.+)$/))) {
+        const query = m[1].trim();
+        const input = document.getElementById('searchInput');
+        if (input) input.value = query;
+        searchFunction({ target: { value: query } });
+        speak(`Iščem gradivo ${query}`);
+        return;
     }
-};
-
-recognition.onstart = () => {
-    console.log("Poslušam...");
-    voiceBtn.style.boxShadow = "0 0 15px red";
-};
-
-recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    processVoiceCommand(transcript);
-};
-
-recognition.onend = () => {
-    voiceBtn.style.boxShadow = "none";
-};
-
-recognition.onerror = (event) => {
-    if (event.error === 'network') {
-        speak("Napaka v omrežju.");
+    if (text.match(/^(?:pojdi\s+)?(?:domov|začetek)$/)) {
+        speak('Vračam se na prvo stran.');
+        setTimeout(() => window.location.href = '/', 1000);
+        return;
     }
-};
+    if (text.match(/^(?:dodaj(?:\s+gradivo)?|novo\s+gradivo)$/)) {
+        showModal();
+        speak('Odpiram modalno okno za dodajanje gradiva.');
+        return;
+    }
+    if (text.match(/^(?:osveži|osvezi|refresh)(?:\s+podatke)?$/)) {
+        naloziPodatke();
+        showPagnation();
+        speak('Osvežujem prikaz.');
+        return;
+    }
+    if (text.match(/^(?:pokaži|prikaži)\s+pomoč$/)) {
+        simulateHoverEffect();
+        speak('Prikaz pomoči.');
+        return;
+    }
+    if (text.match(/^(?:moje\s+gradivo|moja\s+gradiva|prikaži\s+(?:svoje|moje)\s+gradivo)$/)) {
+        const myTab = document.querySelector('.my-data');
+        if (myTab) filterData('my', myTab);
+        speak('Prikaz tvojega gradiva.');
+        return;
+    }
+    if (text === 'pomoč') {
+        speak('Lahko rečete: išči po naslovu gradiva ter naslov, pojdi domov, osveži podatke, dodaj gradivo, prikaz mojega gradiva ali pokaži pomoč.');
+        return;
+    }
+    speak('Ukaza ne razumem. Poskusite znova.');
+}
+
+if (voiceBtn) {
+    voiceBtn.onclick = () => {
+        if (listening) stopListening();
+        else startListening();
+    };
+}
+
+// Push-to-talk: hold V to record, release to send
+window.addEventListener('keydown', (e) => {
+    if (e.key !== 'v' && e.key !== 'V') return;
+    if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (isTypingInField() || anyModalOpen()) return;
+    e.preventDefault();
+    startListening();
+});
+window.addEventListener('keyup', (e) => {
+    if (e.key !== 'v' && e.key !== 'V') return;
+    if (!listening) return;
+    e.preventDefault();
+    stopListening();
+});
 
 function simulateHoverEffect() {
     const infoContainer = document.querySelector('.info-container');
@@ -1358,13 +1429,51 @@ window.addEventListener('online', async () => {
 });
 
 window.addEventListener('keydown', (e) => {
+    // Esc always closes any open modal
+    if (e.key === 'Escape') {
+        const modals = document.querySelectorAll('.modal');
+        const anyOpen = [...modals].some(m => m.style.display && m.style.display !== 'none');
+        if (anyOpen) closeModal();
+        return;
+    }
+
     if (e.ctrlKey && e.key === 'r') {
         e.preventDefault();
         naloziPodatke();
+        return;
     }
     if (e.ctrlKey && e.key === 'f') {
         e.preventDefault();
         document.getElementById('searchInput')?.focus();
+        return;
+    }
+
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (isTypingInField()) return;
+    // 'v' is push-to-talk, handled in the voice section
+
+    if (e.key === '/') {
+        e.preventDefault();
+        const s = document.getElementById('searchInput');
+        s?.focus();
+        s?.select();
+        return;
+    }
+    if (e.key === 'h' || e.key === 'H') {
+        e.preventDefault();
+        simulateHoverEffect();
+        return;
+    }
+    if (e.key === 'n' || e.key === 'N') {
+        e.preventDefault();
+        showModal();
+        return;
+    }
+    if (e.key === 'm' || e.key === 'M') {
+        e.preventDefault();
+        const myTab = document.querySelector('.my-data');
+        if (myTab) filterData('my', myTab);
+        return;
     }
 });
 
