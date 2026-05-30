@@ -410,6 +410,9 @@
                     <button id="download-button" class="btn-download">
                         <i class="fa-solid fa-download"></i>
                     </button>
+                    <button id="share-button" class="btn-download" title="Deli gradivo">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -457,6 +460,17 @@
                     </button>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <div id="pdfViewerModal" class="modal pdf-viewer-modal">
+        <div class="pdf-viewer-content">
+            <div class="pdf-viewer-header">
+                <h3 id="pdf-viewer-title"><i class="fa-solid fa-file-pdf"></i> Branje gradiva</h3>
+                <span id="pdf-wake-lock-status" class="pdf-wake-status"></span>
+                <span class="close-modal" onclick="closePdfViewer()">&times;</span>
+            </div>
+            <iframe id="pdf-viewer-frame" title="PDF gradivo"></iframe>
         </div>
     </div>
 

@@ -1235,11 +1235,18 @@ window.openEditModal = async function (id) {
     }
 };
 
-window.prikaziPodrobnosti = async function (id) {
+window.prikaziPodrobnosti = async function (id, skipHistory) {
     document.querySelector('.container').style.display = 'none';
     document.getElementById('profile-view').style.display = 'none';
     const detailView = document.getElementById('material-detail-view');
     detailView.style.display = 'block';
+
+    if (!skipHistory) {
+        const newUrl = `${window.location.pathname}?gradivo=${id}`;
+        if (window.location.search !== `?gradivo=${id}`) {
+            history.pushState({ gradivo: id }, '', newUrl);
+        }
+    }
 
     try {
         const response = await fetch(`${urlMaterials}/${id}`);
@@ -1261,6 +1268,22 @@ window.prikaziPodrobnosti = async function (id) {
         const btnAddToCart = document.getElementById('add-to-cart-button');
         if (btnAddToCart) {
             btnAddToCart.onclick = () => addMaterialToCart(item.id);
+        }
+
+        const btnShare = document.getElementById('share-button');
+        if (btnShare) {
+            btnShare.onclick = () => shareMaterial(item);
+        }
+
+        const btnReadPdf = document.getElementById('read-pdf-btn');
+        if (btnReadPdf) {
+            btnReadPdf.style.display = 'none';
+            btnReadPdf.onclick = null;
+            const hasAccess = await userCanReadMaterial(item);
+            if (hasAccess) {
+                btnReadPdf.style.display = '';
+                btnReadPdf.onclick = () => openPdfViewer(item);
+            }
         }
 
         loadReviews(id);
@@ -1347,7 +1370,35 @@ window.showStatistics = async function () {
 window.backToShop = function () {
     hideAllViews();
     document.querySelector('.container').style.display = 'block';
+    if (window.location.search) {
+        history.pushState({}, '', window.location.pathname);
+    }
 };
+
+window.addEventListener('popstate', function (event) {
+    const params = new URLSearchParams(window.location.search);
+    const gradivoId = params.get('gradivo');
+    if (gradivoId) {
+        window.prikaziPodrobnosti(gradivoId, true);
+    } else {
+        hideAllViews();
+        const main = document.querySelector('.container');
+        if (main) main.style.display = 'block';
+    }
+});
+
+window.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const gradivoId = params.get('gradivo');
+    if (gradivoId) {
+        const tryOpen = function () {
+            if (document.getElementById('material-detail-view')) {
+                window.prikaziPodrobnosti(gradivoId, true);
+            }
+        };
+        setTimeout(tryOpen, 500);
+    }
+});
 
 async function downloadFile(id) {
     const token = localStorage.getItem('token');
@@ -1384,6 +1435,173 @@ async function downloadFile(id) {
     } catch (error) {
         showCustomNotification(error.message, "error");
     }
+}
+
+async function userCanReadMaterial(item) {
+    try {
+        const userRaw = localStorage.getItem('user');
+        if (!userRaw) return false;
+        const user = JSON.parse(userRaw);
+        if (user && item && String(item.korisnikId) === String(user.id)) return true;
+
+        const token = localStorage.getItem('token');
+        if (!token) return false;
+        const resp = await fetch('/api/v1/cart-payments/library', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!resp.ok) return false;
+        const data = await resp.json();
+        const ids = new Set((data.materialIds || []).map(String));
+        return ids.has(String(item.id));
+    } catch (e) {
+        return false;
+    }
+}
+
+let pdfViewerBlobUrl = null;
+let screenWakeLock = null;
+let wakeLockReacquireHandler = null;
+
+async function requestScreenWakeLock() {
+    if (!('wakeLock' in navigator)) return false;
+    try {
+        screenWakeLock = await navigator.wakeLock.request('screen');
+        screenWakeLock.addEventListener('release', () => {
+            const status = document.getElementById('pdf-wake-lock-status');
+            if (status) {
+                status.textContent = 'Zaslon: spuščen';
+                status.classList.add('off');
+            }
+        });
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
+async function releaseScreenWakeLock() {
+    if (screenWakeLock) {
+        try { await screenWakeLock.release(); } catch (e) { }
+        screenWakeLock = null;
+    }
+    if (wakeLockReacquireHandler) {
+        document.removeEventListener('visibilitychange', wakeLockReacquireHandler);
+        wakeLockReacquireHandler = null;
+    }
+}
+
+async function openPdfViewer(item) {
+    const modal = document.getElementById('pdfViewerModal');
+    const frame = document.getElementById('pdf-viewer-frame');
+    const titleEl = document.getElementById('pdf-viewer-title');
+    const status = document.getElementById('pdf-wake-lock-status');
+    if (!modal || !frame) return;
+
+    if (titleEl) {
+        titleEl.innerHTML = `<i class="fa-solid fa-file-pdf"></i> ${item.naziv || 'Branje gradiva'}`;
+    }
+    modal.style.display = 'block';
+    frame.src = 'about:blank';
+
+    try {
+        const token = localStorage.getItem('token');
+        const resp = await fetch(`http://localhost:3000/api/v1/materials/${item.id}/download`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!resp.ok) {
+            const err = await resp.json().catch(() => ({}));
+            throw new Error(err.napaka || 'Napaka pri nalaganju gradiva.');
+        }
+        const blob = await resp.blob();
+        const pdfBlob = blob.type === 'application/pdf' ? blob : new Blob([blob], { type: 'application/pdf' });
+        if (pdfViewerBlobUrl) {
+            URL.revokeObjectURL(pdfViewerBlobUrl);
+        }
+        pdfViewerBlobUrl = URL.createObjectURL(pdfBlob);
+        frame.src = pdfViewerBlobUrl;
+    } catch (e) {
+        if (typeof showCustomNotification === 'function') {
+            showCustomNotification(e.message, 'error');
+        } else {
+            alert(e.message);
+        }
+        closePdfViewer();
+        return;
+    }
+
+    const gotLock = await requestScreenWakeLock();
+    if (status) {
+        if (gotLock) {
+            status.textContent = 'Zaslon ostane prižgan';
+            status.classList.remove('off');
+        } else {
+            status.textContent = 'wake lock ni podprt';
+            status.classList.add('off');
+        }
+    }
+
+    wakeLockReacquireHandler = async () => {
+        if (document.visibilityState === 'visible' && document.getElementById('pdfViewerModal').style.display === 'block') {
+            await requestScreenWakeLock();
+            if (status && screenWakeLock) {
+                status.textContent = 'Zaslon ostane prižgan';
+                status.classList.remove('off');
+            }
+        }
+    };
+    document.addEventListener('visibilitychange', wakeLockReacquireHandler);
+}
+
+window.closePdfViewer = async function () {
+    const modal = document.getElementById('pdfViewerModal');
+    const frame = document.getElementById('pdf-viewer-frame');
+    if (modal) modal.style.display = 'none';
+    if (frame) frame.src = 'about:blank';
+    if (pdfViewerBlobUrl) {
+        URL.revokeObjectURL(pdfViewerBlobUrl);
+        pdfViewerBlobUrl = null;
+    }
+    await releaseScreenWakeLock();
+};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('pdfViewerModal');
+        if (modal && modal.style.display === 'block') {
+            window.closePdfViewer();
+        }
+    }
+});
+
+async function shareMaterial(item) {
+    const shareUrl = window.location.href;
+    const shareData = {
+        title: item.naziv,
+        text: `Poglej to gradivo na StudyHub: ${item.naziv}${item.predmet ? ' (' + item.predmet + ')' : ''}`,
+        url: shareUrl
+    };
+
+    if (navigator.share) {
+        try {
+            await navigator.share(shareData);
+        } catch (err) {
+            if (err && err.name !== 'AbortError') {
+                showNotification('Deljenje ni uspelo.', true);
+            }
+        }
+        return;
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+            await navigator.clipboard.writeText(shareUrl);
+            showNotification('Povezava je kopirana v odložišče.');
+            return;
+        } catch (err) {
+        }
+    }
+
+    window.prompt('Kopiraj povezavo:', shareUrl);
 }
 
 function showNotification(text, isError = false) {
